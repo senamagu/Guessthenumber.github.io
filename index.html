@@ -98,7 +98,7 @@
     <div id="input-section" style="display:none;">
         <input type="number" id="user-input" placeholder="？" />
         <br>
-        <button onclick="checkAnswer()">回答する</button>
+        <button id="submit-btn" onclick="checkAnswer()">回答する</button>
     </div>
     
     <button id="start-btn" onclick="startGame()">スタート！</button>
@@ -125,6 +125,7 @@
     const soundtap = new Audio('https://senamagu.github.io/Guessthenumber.github.io/タップ音.mp3'); // タップ音
 
     function startGame() {
+        userInput.readOnly = false;
         soundSuccess.pause();
         soundSuccess.currentTime = 0; 
         soundError.pause();
@@ -172,7 +173,10 @@
     }
 
     function checkAnswer() {
-        inputSection.style.display = 'none';
+    // ★回答ボタンだけを非表示にする
+    submitBtn.style.display = 'none';
+    // 入力欄は触れないように固定する（書き換え防止）
+    userInput.readOnly = true;
         if (userInput.value === targetNumber) {
             soundSuccess.play();
             correctTotal++; // 1増やす
