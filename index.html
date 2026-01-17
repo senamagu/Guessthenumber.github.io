@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一瞬の数字当て - カスタム版</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #eef2f3;
+        }
+        #game-container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        .settings {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        #display-area {
+            font-size: 3.5rem;
+            font-weight: bold;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            color: #333;
+            letter-spacing: 2px;
+        }
+        .stats {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        input[type="number"] {
+            font-size: 1.5rem;
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 10px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        button:hover { background-color: #357abd; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        #message { margin-top: 15px; font-weight: bold; min-height: 1.5em; }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h2>数字当てトレーニング</h2>
+    
+    <div class="settings" id="setup-section">
+        <label>桁数設定: 
+            <input type="number" id="digit-select" value="4" min="1" max="10" style="width: 50px; font-size: 1rem; padding: 2px;">
+        </label>
+    </div>
+
+    <div class="stats">
+        現在の表示速度: <span id="current-speed">0.20</span>秒
+    </div>
+
+    <div id="display-area">Ready?</div>
+    
+    <div id="input-section" style="display:none;">
+        <input type="number" id="user-input" placeholder="？" />
+        <br>
+        <button onclick="checkAnswer()">回答する</button>
+    </div>
+    
+    <button id="start-btn" onclick="startGame()">スタート！</button>
+    <div id="message"></div>
+</div>
+
+<script>
+    let targetNumber = "";
+    let displayTime = 200; // 初期値 0.2秒
+    const MIN_TIME = 50;   // 最速 0.05秒
+    
+    const displayArea = document.getElementById('display-area');
+    const userInput = document.getElementById('user-input');
+    const inputSection = document.getElementById('input-section');
+    const startBtn = document.getElementById('start-btn');
+    const message = document.getElementById('message');
+    const speedText = document.getElementById('current-speed');
+    const digitInput = document.getElementById('digit-select');
+
+    function startGame() {
+        startBtn.style.display = 'none';
+        document.getElementById('setup-section').style.display = 'none';
+        inputSection.style.display = 'none';
+        message.textContent = "";
+        userInput.value = "";
+        
+        let timeLeft = 3.0;
+        
+        // カウントダウン
+        const timer = setInterval(() => {
+            displayArea.textContent = timeLeft.toFixed(1);
+            timeLeft -= 0.1;
+
+            if (timeLeft < 0) {
+                clearInterval(timer);
+                showNumber();
+            }
+        }, 100);
+    }
+
+    function showNumber() {
+        // 指定された桁数のランダムな数字を生成
+        const digits = parseInt(digitInput.value);
+        const min = Math.pow(10, digits - 1);
+        const max = Math.pow(10, digits) - 1;
+        targetNumber = Math.floor(min + Math.random() * (max - min + 1)).toString();
+        
+        displayArea.textContent = targetNumber;
+        displayArea.style.color = "#e67e22";
+
+        // 動的な表示時間で消去
+        setTimeout(() => {
+            displayArea.textContent = "****";
+            displayArea.style.color = "#333";
+            inputSection.style.display = 'block';
+            userInput.focus();
+        }, displayTime);
+    }
+
+    function checkAnswer() {
+        if (userInput.value === targetNumber) {
+            message.textContent = "正解！スピードアップします！";
+            message.className = "success";
+            // 正解したら0.02秒ずつ速くする（最低0.05秒まで）
+            displayTime = Math.max(MIN_TIME, displayTime - 20);
+            speedText.textContent = (displayTime / 1000).toFixed(2);
+        } else {
+            message.textContent = `失敗！正解は ${targetNumber} でした。`;
+            message.className = "error";
+            // 失敗したら少し難易度を戻す
+            displayTime += 10;
+            speedText.textContent = (displayTime / 1000).toFixed(2);
+        }
+        
+        startBtn.style.display = 'inline-block';
+        startBtn.textContent = "次のレベルへ";
+        document.getElementById('setup-section').style.display = 'block';
+    }
+
+    userInput.addEventListener("keyup", function(event) {
+        if (event.key === "Enter") checkAnswer();
+    });
+</script>
+
+</body>
+</html>
