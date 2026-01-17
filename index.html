@@ -83,7 +83,12 @@
             <input type="number" id="digit-select" value="4" min="1" max="10" style="width: 50px; font-size: 1rem; padding: 2px;">
         </label>
     </div>
-
+    
+    <div class="score-board">
+         正解: <span id="correct-count">0</span> | 
+         不正解: <span id="wrong-count">0</span>
+    </div>
+    
     <div class="stats">
         現在の表示速度: <span id="current-speed">0.20</span>秒
     </div>
@@ -101,6 +106,8 @@
 </div>
 
 <script>
+    let correctTotal = 0;// カウント用の変数
+    let wrongTotal = 0;// カウント用の変数
     let targetNumber = "";
     let displayTime = 200; // 初期値 0.2秒
     const MIN_TIME = 1;   // 最速 0.001秒
@@ -165,8 +172,11 @@
     }
 
     function checkAnswer() {
+        inputSection.style.display = 'none';
         if (userInput.value === targetNumber) {
             soundSuccess.play();
+            correctTotal++; // 1増やす
+            document.getElementById('correct-count').textContent = correctTotal; // 画面を更新
             message.textContent = "正解！スピードアップ！";
             message.className = "success";
             // 正解したら0.02秒ずつ速くする（最低0.05秒まで）
@@ -174,6 +184,8 @@
             speedText.textContent = (displayTime / 1000).toFixed(2);
         } else {
             soundError.play();
+            wrongTotal++; // 1増やす
+            document.getElementById('wrong-count').textContent = wrongTotal; // 画面を更新
             message.textContent = `不正解！正解は ${targetNumber} でした。`;
             message.className = "error";
             // 失敗したら少し難易度を戻す
