@@ -96,7 +96,7 @@
     
 <div id="bgm-control-wrapper" style="margin-bottom: 20px;">
         <div id="bgm-control" style="display: flex; flex-direction: column; align-items: center; background: white; padding: 10px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 200px;">
-            <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #858585; padding: 5px 10px; font-size: 0.8rem; margin-bottom: 5px; width: 100%;">BGM: ON</button>
+            <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #e74c3c; padding: 5px 10px; font-size: 0.8rem; margin-bottom: 5px; width: 100%;">BGM: ON</button>
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span style="font-size: 0.7rem;">音量</span>
                 <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.5" style="width: 100px;">
@@ -186,6 +186,9 @@
     updateVolume();
     
     function startGame() {
+        if (isBgmPlaying) {
+            bgm.play().catch(e => {});
+        }
         // ★ボタンを再表示し、入力欄の固定を解除する
         const submitBtn = document.getElementById('submit-btn');
         submitBtn.style.display = 'inline-block';
