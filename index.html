@@ -112,8 +112,18 @@
     const message = document.getElementById('message');
     const speedText = document.getElementById('current-speed');
     const digitInput = document.getElementById('digit-select');
+    const soundCount = new Audio('https://senamagu.github.io/Guessthenumber.github.io/カウント.mp3'); // カウント音
+　　 const soundSuccess = new Audio('https://senamagu.github.io/Guessthenumber.github.io/成功.mp3'); // 正解音
+　　 const soundError = new Audio('https://senamagu.github.io/Guessthenumber.github.io/失敗.mp3'); // 不正解音
+    const soundtap = new Audio('https://senamagu.github.io/Guessthenumber.github.io/タップ音.mp3'); // タップ音
 
     function startGame() {
+        soundSuccess.currentTime = 0; 
+        soundError.currentTime = 0; 
+        soundtap.currentTime = 0; 
+        soundtap.play();
+        soundCount.currentTime = 0; 
+        soundCount.play();
         startBtn.style.display = 'none';
         document.getElementById('setup-section').style.display = 'none';
         inputSection.style.display = 'none';
@@ -136,11 +146,11 @@
 
     function showNumber() {
         // 指定された桁数のランダムな数字を生成
+        soundCount.currentTime = 0; 
         const digits = parseInt(digitInput.value);
         const min = Math.pow(10, digits - 1);
         const max = Math.pow(10, digits) - 1;
         targetNumber = Math.floor(min + Math.random() * (max - min + 1)).toString();
-        
         displayArea.textContent = targetNumber;
         displayArea.style.color = "#333";
 
@@ -155,12 +165,16 @@
 
     function checkAnswer() {
         if (userInput.value === targetNumber) {
+            soundSuccess.currentTime = 0; 
+            soundSuccess.play();
             message.textContent = "正解！スピードアップします！";
             message.className = "success";
             // 正解したら0.02秒ずつ速くする（最低0.05秒まで）
             displayTime = Math.max(MIN_TIME, displayTime - 20);
             speedText.textContent = (displayTime / 1000).toFixed(2);
         } else {
+            soundError.currentTime = 0; 
+            soundError.play();
             message.textContent = `失敗！正解は ${targetNumber} でした。`;
             message.className = "error";
             // 失敗したら少し難易度を戻す
