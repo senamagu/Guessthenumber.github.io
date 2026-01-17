@@ -40,11 +40,16 @@
             margin: 10px 0;
             color: #333;
             letter-spacing: 2px;
+            text-align: center;
         }
         .stats {
             font-size: 0.8rem;
             color: #666;
             margin-bottom: 10px;
+            text-align: center;
+        }
+        .stats div {
+            margin: 2px 0; /* 行間を少し作ると見やすくなります */
         }
         input[type="number"] {
             font-size: 1.5rem;
@@ -90,8 +95,8 @@
     </div>
     
     <div class="stats">
-        現在の表示速度: <span id="current-speed">0.20</span>秒
-        現在の桁数: <span id="digit-select">4</span>桁
+        <div>現在の表示速度: <span id="current-speed">0.20</span>秒</div>
+        <div>現在の桁数: <span id="current-digits">4</span>桁</div>
     </div>
 
     <div id="display-area">Ready?</div>
@@ -139,6 +144,8 @@
         soundCount.currentTime = 0; 
         soundCount.play();
         startBtn.style.display = 'none';
+        const digits = digitInput.value;
+        document.getElementById('current-digits').textContent = digits;
         document.getElementById('back-to-title-btn').style.display = 'none';
         document.getElementById('setup-section').style.display = 'none';
         inputSection.style.display = 'none';
@@ -175,6 +182,7 @@ function backToTitle() {
     startBtn.textContent = "スタート！";
     document.getElementById('back-to-title-btn').style.display = 'none';
     document.getElementById('setup-section').style.display = 'block';
+    document.getElementById('current-digits').textContent = digitInput.value;
     inputSection.style.display = 'none';
     displayArea.textContent = "Ready?";
     message.textContent = "";
