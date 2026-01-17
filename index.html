@@ -148,6 +148,7 @@
         
         // カウントダウン
         const timer = setInterval(() => {
+            displayArea.style.color = "#333";
             displayArea.textContent = timeLeft.toFixed(1);
             timeLeft -= 0.1;
 
@@ -193,8 +194,8 @@ function backToTitle() {
         setTimeout(() => {
        　　  displayArea.textContent = "*".repeat(digits);//桁数分だけ「*」を表示する
             displayArea.style.color = "#333";//「*」の色
-            submitBtn.style.display = 'block';//回答ボタンの表示
-            userInput.style.display = 'block';//解答欄の表示
+            submitBtn.style.display = 'inline-block';//回答ボタンの表示
+            userInput.style.display = 'inline-block';//解答欄の表示
             inputSection.style.display = 'block';//たのむ、反応してくれ
             userInput.focus();//カーソルの移動
         }, displayTime);
@@ -210,6 +211,7 @@ function backToTitle() {
             correctTotal++; // 1増やす
             document.getElementById('correct-count').textContent = correctTotal; // 画面を更新
             displayArea.textContent = targetNumber;
+            displayArea.style.color = "#2ecc71";
             message.textContent = "正解！スピードアップ！";
             message.className = "success";
             // 正解したら0.02秒ずつ速くする（最低0.05秒まで）
