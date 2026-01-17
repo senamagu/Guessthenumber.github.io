@@ -102,16 +102,17 @@
                 <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.5" style="width: 100px;">
             </div>
         </div>
+
+    <div id="setup-section" style="display: flex; flex-direction: column; align-items: center; background: white; padding: 10px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 200px; box-sizing: border-box; border: 1px solid #eee;">
+        <label style="font-size: 0.8rem; color: #333; font-weight: bold;">
+            桁数設定: 
+            <input type="number" id="digit-select" value="4" min="1" max="10" style="width: 50px; font-size: 1rem; padding: 2px; border: 1px solid #ddd; border-radius: 5px; text-align: center;">
+        </label>
     </div>
+</div>
 
 <div id="game-container">
     <h2>数字当てゲーム</h2>
-    
-    <div class="settings" id="setup-section">
-        <label>桁数設定: 
-            <input type="number" id="digit-select" value="4" min="1" max="10" style="width: 50px; font-size: 1rem; padding: 2px;">
-        </label>
-    </div>
     
     <div class="score-board">
          正解: <span id="correct-count">0</span> | 
@@ -164,10 +165,6 @@
     function updateVolume() {
     const vol = volumeControl.value;
         if (bgm) bgm.volume = vol;
-        if (soundCount) soundCount.volume = vol;
-        if (soundSuccess) soundSuccess.volume = vol;
-        if (soundError) soundError.volume = vol;
-        if (typeof soundtap !== 'undefined') soundtap.volume = vol;
     }
 
     function toggleBGM() {
