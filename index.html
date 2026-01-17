@@ -292,7 +292,7 @@ function backToTitle() {
             message.textContent = `不正解！スピードダウン！`;
             message.className = "error";
             // 失敗したら少し難易度を戻す
-            displayTime += 10;
+            displayTime += 50;
             speedText.textContent = (displayTime / 1000).toFixed(2);
         }
         
