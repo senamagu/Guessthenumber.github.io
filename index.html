@@ -159,8 +159,8 @@
         setTimeout(() => {
        　　  displayArea.textContent = "*".repeat(digits);//桁数分だけ「*」を表示する
             displayArea.style.color = "#333";//「*」の色
-            inputSection.style.display = 'block';
-            userInput.focus();
+            inputSection.style.display = 'block';//解答欄の表示
+            userInput.focus();//カーソルの移動
         }, displayTime);
     }
 
