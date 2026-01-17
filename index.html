@@ -102,6 +102,7 @@
     </div>
     
     <button id="start-btn" onclick="startGame()">スタート！</button>
+    <button id="back-to-title-btn" onclick="backToTitle()" style="display:none; background-color: #6c757d;">タイトルへ戻る</button>
     <div id="message"></div>
 </div>
 
@@ -137,6 +138,7 @@
         soundCount.currentTime = 0; 
         soundCount.play();
         startBtn.style.display = 'none';
+        document.getElementById('back-to-title-btn').style.display = 'none';
         document.getElementById('setup-section').style.display = 'none';
         inputSection.style.display = 'none';
         message.textContent = "";
@@ -156,6 +158,26 @@
         }, 100);
     }
 
+function backToTitle() {
+    // スコアと速度のリセット
+    correctTotal = 0;
+    wrongTotal = 0;
+    displayTime = 200;
+    document.getElementById('correct-count').textContent = "0";
+    document.getElementById('wrong-count').textContent = "0";
+    document.getElementById('current-speed').textContent = "0.20";
+
+    // 画面表示を初期状態に戻す
+    document.getElementById('setup-section').style.display = 'block'; // 桁数変更を許可
+    startBtn.style.display = 'inline-block';
+    startBtn.textContent = "スタート！";
+    document.getElementById('back-to-title-btn').style.display = 'none';
+    document.getElementById('setup-section').style.display = 'block';
+    inputSection.style.display = 'none';
+    displayArea.textContent = "Ready?";
+    message.textContent = "";
+}
+    
     function showNumber() {
         // 指定された桁数のランダムな数字を生成
         soundCount.pause();
@@ -205,7 +227,7 @@
         
         startBtn.style.display = 'inline-block';
         startBtn.textContent = "次のレベルへ";
-        document.getElementById('setup-section').style.display = 'block';
+        document.getElementById('back-to-title-btn').style.display = 'inline-block';
     }
 
     userInput.addEventListener("keyup", function(event) {
