@@ -22,6 +22,18 @@
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 350px;
+            position: relative;
+        }
+        #bgm-control {
+            /* ★修正：absoluteのままでOKですが、枠の端に合わせます */
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            background: rgba(248, 249, 250, 0.9); /* 少し背景を明るく */
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
         }
         .settings {
             margin-bottom: 20px;
@@ -83,6 +95,14 @@
 <div id="game-container">
     <h2>数字当てゲーム</h2>
 
+    <div id="bgm-control" style="position: absolute; top: 10px; right: 10px; z-index: 100; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+        <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #f39c12; padding: 8px 15px; font-size: 0.8rem; margin-bottom: 8px; width: 100%;">BGM: OFF</button>
+        <div style="display: flex; align-items: center; gap: 5px;">
+            <span style="font-size: 0.7rem;">🔈</span>
+            <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.5" style="width: 80px; cursor: pointer;">
+            <span style="font-size: 0.7rem;">🔊</span>
+        </div>
+    </div>
     <audio id="bgm" src="https://senamagu.github.io/Guessthenumber.github.io/追いかけっこキャッハー.mp3" loop></audio>
     
     <div id="bgm-control" style="position: absolute; top: 10px; right: 10px; z-index: 100;">
@@ -124,7 +144,8 @@
     let targetNumber = "";
     let displayTime = 200; // 初期値 0.2秒
     const MIN_TIME = 1;   // 最速 0.001秒
-    
+
+    const volumeControl = document.getElementById('volume-control');
     const displayArea = document.getElementById('display-area');
     const userInput = document.getElementById('user-input');
     const inputSection = document.getElementById('input-section');
@@ -155,6 +176,26 @@ let isBgmPlaying = false;
       }
       isBgmPlaying = !isBgmPlaying;
   }
+
+// 音量を一括更新する関数
+function updateVolume() {
+    const vol = volumeControl.value;
+    
+    // BGMの音量
+    if (typeof bgm !== 'undefined') bgm.volume = vol;
+    
+    // 各種効果音の音量 
+    soundCount.volume = vol;
+    soundSuccess.volume = vol;
+    soundError.volume = vol;
+    soundtap.volume = vol;
+}
+// スライダーを動かした時に実行されるイベント
+volumeControl.addEventListener('input', updateVolume);
+
+// ページ読み込み時に初期音量を反映
+updateVolume();
+
     
     function startGame() {
         // ★ボタンを再表示し、入力欄の固定を解除する
