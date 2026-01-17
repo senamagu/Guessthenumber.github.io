@@ -116,6 +116,7 @@
     const userInput = document.getElementById('user-input');
     const inputSection = document.getElementById('input-section');
     const startBtn = document.getElementById('start-btn');
+    const submitBtn = document.getElementById('submit-btn');
     const message = document.getElementById('message');
     const speedText = document.getElementById('current-speed');
     const digitInput = document.getElementById('digit-select');
@@ -177,7 +178,7 @@
 
     function checkAnswer() {
     // ★回答ボタンだけを非表示にする
-    submitBtn.style.display = 'none';
+    submitbtn.style.display = 'none';
     // 入力欄は触れないように固定する（書き換え防止）
     userInput.readOnly = true;
         if (userInput.value === targetNumber) {
