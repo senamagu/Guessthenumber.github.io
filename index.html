@@ -82,6 +82,12 @@
 
 <div id="game-container">
     <h2>数字当てゲーム</h2>
+
+    <audio id="bgm" src="https://senamagu.github.io/Guessthenumber.github.io/追いかけっこキャッハー.mp3" loop></audio>
+    
+    <div id="bgm-control" style="position: absolute; top: 10px; right: 10px; z-index: 100;">
+        <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #f39c12; padding: 8px 15px; font-size: 0.8rem;">BGM: OFF</button>
+    </div>
     
     <div class="settings" id="setup-section">
         <label>桁数設定: 
@@ -132,6 +138,24 @@
 　　 const soundError = new Audio('https://senamagu.github.io/Guessthenumber.github.io/失敗.mp3'); // 不正解音
     const soundtap = new Audio('https://senamagu.github.io/Guessthenumber.github.io/タップ音.mp3'); // タップ音
 
+    const bgm = document.getElementById('bgm');
+const bgmBtn = document.getElementById('bgm-btn');
+let isBgmPlaying = false;
+
+  function toggleBGM() {
+      if (isBgmPlaying) {
+          bgm.pause();
+          bgmBtn.textContent = "BGM: OFF";
+          bgmBtn.style.backgroundColor = "#f39c12";
+      } else {
+          // ブラウザの制限対策：ユーザー操作(クリック)時に再生
+          bgm.play().catch(e => console.log("再生エラー:", e));
+          bgmBtn.textContent = "BGM: ON";
+          bgmBtn.style.backgroundColor = "#e74c3c"; // ONの時は色を変える
+      }
+      isBgmPlaying = !isBgmPlaying;
+  }
+    
     function startGame() {
         // ★ボタンを再表示し、入力欄の固定を解除する
         const submitBtn = document.getElementById('submit-btn');
