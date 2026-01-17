@@ -118,8 +118,8 @@
     const soundtap = new Audio('https://senamagu.github.io/Guessthenumber.github.io/タップ音.mp3'); // タップ音
 
     function startGame() {
-        soundSuccess.currentTime = 0; 
-        soundError.currentTime = 0; 
+        soundSuccess.pause();
+        soundError.pause();
         soundtap.currentTime = 0; 
         soundtap.play();
         soundCount.currentTime = 0; 
@@ -146,6 +146,8 @@
 
     function showNumber() {
         // 指定された桁数のランダムな数字を生成
+        soundtap.pause();
+        soundCount.pause();
         soundCount.currentTime = 0; 
         const digits = parseInt(digitInput.value);
         const min = Math.pow(10, digits - 1);
