@@ -125,6 +125,9 @@
     const soundtap = new Audio('https://senamagu.github.io/Guessthenumber.github.io/タップ音.mp3'); // タップ音
 
     function startGame() {
+        // ★ボタンを再表示し、入力欄の固定を解除する
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.style.display = 'inline-block';
         userInput.readOnly = false;
         soundSuccess.pause();
         soundSuccess.currentTime = 0; 
