@@ -15,6 +15,16 @@
             margin: 0; /* [cite: 48] */
             background-color: #eef2f3; /* [cite: 48] */
         }
+        #bgm-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 100;
+            background: rgba(248, 249, 250, 0.9); /* 少し背景を明るく */
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
         #game-container {
             text-align: center;
             background: white;
@@ -23,16 +33,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 350px;
             position: relative;
-        }
-        #bgm-control {
-            position: relative;
-            top: 15px;
-            right: 15px;
-            z-index: 100;
-            background: rgba(248, 249, 250, 0.9); /* 少し背景を明るく */
-            padding: 8px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
         }
         .settings {
             margin-bottom: 20px;
@@ -91,18 +91,21 @@
 </head>
 <body>
 <div id="main-layout" style="display: flex; align-items: flex-start; gap: 20px;">
-    
-<div id="game-container">
-    <h2>数字当てゲーム</h2>
 
 <audio id="bgm" src="https://senamagu.github.io/Guessthenumber.github.io/追いかけっこキャッハー.mp3" loop></audio>
-   <div id="bgm-control" style="background: white; padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 120px; text-align: center;">
-        <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #f39c12; padding: 8px; font-size: 0.8rem; margin-bottom: 10px; width: 100%;">BGM: OFF</button>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-            <span style="font-size: 0.7rem;">音量</span>
-            <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.5" style="width: 80px;">
+    
+<div id="bgm-control-wrapper" style="margin-bottom: 20px;">
+        <div id="bgm-control" style="display: flex; flex-direction: column; align-items: center; background: white; padding: 10px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 200px;">
+            <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #f39c12; padding: 5px 10px; font-size: 0.8rem; margin-bottom: 5px; width: 100%;">BGM: OFF</button>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 0.7rem;">音量</span>
+                <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.5" style="width: 100px;">
+            </div>
         </div>
     </div>
+
+<div id="game-container">
+    <h2>数字当てゲーム</h2>
     
     <div class="settings" id="setup-section">
         <label>桁数設定: 
@@ -155,22 +158,35 @@
     const soundtap = new Audio('https://senamagu.github.io/Guessthenumber.github.io/タップ音.mp3'); // タップ音
 
     const bgm = document.getElementById('bgm');
-const bgmBtn = document.getElementById('bgm-btn');
-let isBgmPlaying = false;
+    const bgmBtn = document.getElementById('bgm-btn');
+    let isBgmPlaying = false;
 
-// 音量を一括更新する関数
-function updateVolume() {
+    function updateVolume() {
     const vol = volumeControl.value;
-    
-    // BGMの音量
-    if (typeof bgm !== 'undefined') bgm.volume = vol;
-}
-// スライダーを動かした時に実行されるイベント
-volumeControl.addEventListener('input', updateVolume);
+        if (bgm) bgm.volume = vol;
+        if (soundCount) soundCount.volume = vol;
+        if (soundSuccess) soundSuccess.volume = vol;
+        if (soundError) soundError.volume = vol;
+        if (typeof soundtap !== 'undefined') soundtap.volume = vol;
+    }
 
-// ページ読み込み時に初期音量を反映
-updateVolume();
+    function toggleBGM() {
+        if (isBgmPlaying) {
+            bgm.pause();
+            bgmBtn.textContent = "BGM: OFF";
+            bgmBtn.style.backgroundColor = "#f39c12";
+        } else {
+            bgm.play().catch(e => console.log("BGM再生に失敗:", e));
+            bgmBtn.textContent = "BGM: ON";
+            bgmBtn.style.backgroundColor = "#e74c3c";
+        }
+        isBgmPlaying = !isBgmPlaying;
+    }
+    // スライダーを動かした時に実行されるイベント
+    volumeControl.addEventListener('input', updateVolume);
 
+    // ページ読み込み時に初期音量を反映
+    updateVolume();
     
     function startGame() {
         // ★ボタンを再表示し、入力欄の固定を解除する
