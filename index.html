@@ -177,6 +177,7 @@
             soundSuccess.play();
             correctTotal++; // 1増やす
             document.getElementById('correct-count').textContent = correctTotal; // 画面を更新
+            displayArea.textContent = targetNumber;
             message.textContent = "正解！スピードアップ！";
             message.className = "success";
             // 正解したら0.02秒ずつ速くする（最低0.05秒まで）
@@ -186,6 +187,7 @@
             soundError.play();
             wrongTotal++; // 1増やす
             document.getElementById('wrong-count').textContent = wrongTotal; // 画面を更新
+            displayArea.textContent = targetNumber;
             message.textContent = `不正解！正解は ${targetNumber} でした。`;
             message.className = "error";
             // 失敗したら少し難易度を戻す
