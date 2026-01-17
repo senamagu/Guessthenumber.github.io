@@ -218,7 +218,8 @@ function backToTitle() {
             wrongTotal++; // 1増やす
             document.getElementById('wrong-count').textContent = wrongTotal; // 画面を更新
             displayArea.textContent = targetNumber;
-            message.textContent = `不正解！正解は ${targetNumber} でした。`;
+            displayArea.style.color = "#e74c3c";
+            message.textContent = `不正解！スピードダウン！`;
             message.className = "error";
             // 失敗したら少し難易度を戻す
             displayTime += 10;
