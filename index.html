@@ -103,7 +103,7 @@
 <script>
     let targetNumber = "";
     let displayTime = 200; // 初期値 0.2秒
-    const MIN_TIME = 10;   // 最速 0.01秒
+    const MIN_TIME = 1;   // 最速 0.001秒
     
     const displayArea = document.getElementById('display-area');
     const userInput = document.getElementById('user-input');
@@ -157,8 +157,8 @@
 
         // 動的な表示時間で消去
         setTimeout(() => {
-            displayArea.textContent = "****";
-            displayArea.style.color = "#333";
+       　　  displayArea.textContent = "*".repeat(digits);//桁数分だけ「*」を表示する
+            displayArea.style.color = "#333";//「*」の色
             inputSection.style.display = 'block';
             userInput.focus();
         }, displayTime);
@@ -167,14 +167,14 @@
     function checkAnswer() {
         if (userInput.value === targetNumber) {
             soundSuccess.play();
-            message.textContent = "正解！スピードアップします！";
+            message.textContent = "正解！スピードアップ！";
             message.className = "success";
             // 正解したら0.02秒ずつ速くする（最低0.05秒まで）
             displayTime = Math.max(MIN_TIME, displayTime - 20);
             speedText.textContent = (displayTime / 1000).toFixed(2);
         } else {
             soundError.play();
-            message.textContent = `失敗！正解は ${targetNumber} でした。`;
+            message.textContent = `不正解！正解は ${targetNumber} でした。`;
             message.className = "error";
             // 失敗したら少し難易度を戻す
             displayTime += 10;
