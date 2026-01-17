@@ -119,9 +119,9 @@
 
     function startGame() {
         soundSuccess.pause();
+        soundSuccess.currentTime = 0; 
         soundError.pause();
-        soundtap.currentTime = 0; 
-        soundtap.play();
+        soundError.currentTime = 0; 
         soundCount.currentTime = 0; 
         soundCount.play();
         startBtn.style.display = 'none';
@@ -146,7 +146,6 @@
 
     function showNumber() {
         // 指定された桁数のランダムな数字を生成
-        soundtap.pause();
         soundCount.pause();
         soundCount.currentTime = 0; 
         const digits = parseInt(digitInput.value);
@@ -167,7 +166,6 @@
 
     function checkAnswer() {
         if (userInput.value === targetNumber) {
-            soundSuccess.currentTime = 0; 
             soundSuccess.play();
             message.textContent = "正解！スピードアップします！";
             message.className = "success";
@@ -175,7 +173,6 @@
             displayTime = Math.max(MIN_TIME, displayTime - 20);
             speedText.textContent = (displayTime / 1000).toFixed(2);
         } else {
-            soundError.currentTime = 0; 
             soundError.play();
             message.textContent = `失敗！正解は ${targetNumber} でした。`;
             message.className = "error";
