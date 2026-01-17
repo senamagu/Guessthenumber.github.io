@@ -7,13 +7,13 @@
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #eef2f3;
+            display: flex; /* [cite: 48] */
+            flex-direction: column; /* [cite: 48] */
+            align-items: center; /* [cite: 48] */
+            justify-content: center; /* [cite: 48] */
+            height: 100vh; /* [cite: 48] */
+            margin: 0; /* [cite: 48] */
+            background-color: #eef2f3; /* [cite: 48] */
         }
         #game-container {
             text-align: center;
@@ -25,8 +25,7 @@
             position: relative;
         }
         #bgm-control {
-            /* ★修正：absoluteのままでOKですが、枠の端に合わせます */
-            position: absolute;
+            position: relative;
             top: 15px;
             right: 15px;
             z-index: 100;
@@ -91,22 +90,18 @@
     </style>
 </head>
 <body>
-
+<div id="main-layout" style="display: flex; align-items: flex-start; gap: 20px;">
+    
 <div id="game-container">
     <h2>数字当てゲーム</h2>
 
-    <div id="bgm-control" style="position: absolute; top: 10px; right: 10px; z-index: 100; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-        <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #f39c12; padding: 8px 15px; font-size: 0.8rem; margin-bottom: 8px; width: 100%;">BGM: OFF</button>
-        <div style="display: flex; align-items: center; gap: 5px;">
-            <span style="font-size: 0.7rem;">🔈</span>
-            <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.5" style="width: 80px; cursor: pointer;">
-            <span style="font-size: 0.7rem;">🔊</span>
+<audio id="bgm" src="https://senamagu.github.io/Guessthenumber.github.io/追いかけっこキャッハー.mp3" loop></audio>
+   <div id="bgm-control" style="background: white; padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 120px; text-align: center;">
+        <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #f39c12; padding: 8px; font-size: 0.8rem; margin-bottom: 10px; width: 100%;">BGM: OFF</button>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+            <span style="font-size: 0.7rem;">音量</span>
+            <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.5" style="width: 80px;">
         </div>
-    </div>
-    <audio id="bgm" src="https://senamagu.github.io/Guessthenumber.github.io/追いかけっこキャッハー.mp3" loop></audio>
-    
-    <div id="bgm-control" style="position: absolute; top: 10px; right: 10px; z-index: 100;">
-        <button id="bgm-btn" onclick="toggleBGM()" style="background-color: #f39c12; padding: 8px 15px; font-size: 0.8rem;">BGM: OFF</button>
     </div>
     
     <div class="settings" id="setup-section">
@@ -163,32 +158,12 @@
 const bgmBtn = document.getElementById('bgm-btn');
 let isBgmPlaying = false;
 
-  function toggleBGM() {
-      if (isBgmPlaying) {
-          bgm.pause();
-          bgmBtn.textContent = "BGM: OFF";
-          bgmBtn.style.backgroundColor = "#f39c12";
-      } else {
-          // ブラウザの制限対策：ユーザー操作(クリック)時に再生
-          bgm.play().catch(e => console.log("再生エラー:", e));
-          bgmBtn.textContent = "BGM: ON";
-          bgmBtn.style.backgroundColor = "#e74c3c"; // ONの時は色を変える
-      }
-      isBgmPlaying = !isBgmPlaying;
-  }
-
 // 音量を一括更新する関数
 function updateVolume() {
     const vol = volumeControl.value;
     
     // BGMの音量
     if (typeof bgm !== 'undefined') bgm.volume = vol;
-    
-    // 各種効果音の音量 
-    soundCount.volume = vol;
-    soundSuccess.volume = vol;
-    soundError.volume = vol;
-    soundtap.volume = vol;
 }
 // スライダーを動かした時に実行されるイベント
 volumeControl.addEventListener('input', updateVolume);
