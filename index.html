@@ -193,14 +193,15 @@ function backToTitle() {
         setTimeout(() => {
        　　  displayArea.textContent = "*".repeat(digits);//桁数分だけ「*」を表示する
             displayArea.style.color = "#333";//「*」の色
-            inputSection.style.display = 'block';//解答欄の表示
+            submitBtn.style.display = 'block';//回答ボタンの表示
+            userInput.style.display = 'block';//解答欄の表示
             userInput.focus();//カーソルの移動
         }, displayTime);
     }
 
     function checkAnswer() {
     // ★回答ボタンだけを非表示にする
-    submitbtn.style.display = 'none';
+    submitBtn.style.display = 'none';
     // 入力欄は触れないように固定する（書き換え防止）
     userInput.readOnly = true;
         if (userInput.value === targetNumber) {
